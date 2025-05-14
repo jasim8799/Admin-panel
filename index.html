@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel - Upload Movie</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    #uploadProgress {
+      width: 100%;
+      background-color: #f3f3f3;
+      border-radius: 4px;
+      margin: 10px 0;
+      height: 20px;
+      display: none;
+    }
+    #uploadProgressBar {
+      height: 100%;
+      width: 0%;
+      background-color: #007bff;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    #movieDetails {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
 <body>
   <h1>Upload Movie</h1>
@@ -38,6 +62,12 @@
 
     <button type="submit">Upload Movie</button>
   </form>
+
+  <div id="uploadProgress">
+    <div id="uploadProgressBar"></div>
+  </div>
+
+  <div id="movieDetails"></div>
 
   <script src="script.js"></script>
 </body>
