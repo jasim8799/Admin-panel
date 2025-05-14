@@ -8,33 +8,33 @@
 </head>
 <body>
   <h1>Upload Movie</h1>
-  <form id="movie-form" enctype="multipart/form-data">
+  <form id="movie-form">
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required />
+    <input type="text" id="title" required /><br>
 
     <label for="overview">Overview:</label>
-    <textarea id="overview" name="overview" required></textarea>
+    <input type="text" id="overview" required /><br>
 
     <label for="category">Category:</label>
-    <input type="text" id="category" name="category" required />
+    <input type="text" id="category" required /><br>
+
+    <label for="posterPath">Poster Image URL:</label>
+    <input type="text" id="posterPath" required /><br>
 
     <label for="videoUrl">Video URL:</label>
-    <input type="text" id="videoUrl" name="videoUrl" placeholder="Enter video URL (e.g., mp4)" />
-
-    <label for="movieFile">Movie File:</label>
-    <input type="file" id="movieFile" name="movieFile" accept="video/mp4,video/*" />
+    <input type="text" id="videoUrl" required /><br>
 
     <label for="releaseDate">Release Date:</label>
-    <input type="date" id="releaseDate" name="releaseDate" required />
+    <input type="date" id="releaseDate" required /><br>
 
     <label for="voteAverage">Vote Average:</label>
-    <input type="number" id="voteAverage" name="voteAverage" step="0.1" required />
+    <input type="number" step="0.1" id="voteAverage" required /><br>
 
     <label for="type">Type (Movie/Series):</label>
-    <select id="type" name="type" required>
+    <select id="type" required>
       <option value="Movie">Movie</option>
       <option value="Series">Series</option>
-    </select>
+    </select><br><br>
 
     <button type="submit">Upload Movie</button>
   </form>
