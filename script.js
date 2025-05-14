@@ -5,8 +5,6 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   const title = document.getElementById('title').value;
   const overview = document.getElementById('overview').value;
   const category = document.getElementById('category').value;
-  const posterUrl = document.getElementById('posterUrl').value;
-  const posterFile = document.getElementById('posterFile').files[0];
   const videoUrl = document.getElementById('videoUrl').value;
   const movieFile = document.getElementById('movieFile').files[0];
   const releaseDate = document.getElementById('releaseDate').value;
@@ -18,13 +16,6 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   formData.append('title', title);
   formData.append('overview', overview);
   formData.append('category', category);
-
-  // Append either poster URL or file
-  if (posterUrl) {
-    formData.append('posterPath', posterUrl);
-  } else if (posterFile) {
-    formData.append('posterFile', posterFile);
-  }
 
   // Append either video URL or file
   if (videoUrl) {
