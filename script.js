@@ -14,28 +14,27 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   const title = document.getElementById('title').value;
   const overview = document.getElementById('overview').value;
   const category = document.getElementById('category').value;
-  const posterPath = document.getElementById('posterPath').value;
+  const posterFile = document.getElementById('poster').files[0];
   const videoUrl = document.getElementById('videoUrl').value;
   const releaseDate = document.getElementById('releaseDate').value;
   const voteAverage = parseFloat(document.getElementById('voteAverage').value);
   const type = document.getElementById('type').value;
 
-  // Prepare movie data object
-  const movieData = {
-    title,
-    overview,
-    category,
-    posterPath,
-    videoUrl,
-    releaseDate,
-    voteAverage,
-    type
-  };
+  // Prepare FormData
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('overview', overview);
+  formData.append('category', category);
+  formData.append('poster', posterFile);
+  formData.append('videoUrl', videoUrl);
+  formData.append('releaseDate', releaseDate);
+  formData.append('voteAverage', voteAverage);
+  formData.append('type', type);
 
   // Use XMLHttpRequest to track upload progress
   const xhr = new XMLHttpRequest();
   xhr.open('POST', 'https://api-15hv.onrender.com/api/movies', true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
+  // Do not set Content-Type header; browser will set it automatically for FormData
 
   xhr.upload.onprogress = function (event) {
     if (event.lengthComputable) {
@@ -74,5 +73,5 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     alert('Network error occurred during upload.');
   };
 
-  xhr.send(JSON.stringify(movieData));
+  xhr.send(formData);
 });
