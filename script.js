@@ -34,7 +34,7 @@ document.getElementById('movie-form').addEventListener('submit', function (event
 
   // Use XMLHttpRequest to track upload progress
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://moviestreamapp-l6kk.onrender.com/api/movies', true);
+  xhr.open('POST', 'https://api-15hv.onrender.com/api/movies', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
   xhr.upload.onprogress = function (event) {
