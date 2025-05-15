@@ -32,7 +32,7 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   formData.append('title', title);
   formData.append('overview', overview);
   formData.append('category', category);
-  formData.append('posterUrl', posterUrl);
+  formData.append('posterPath', posterUrl);
   formData.append('videoUrl', videoUrl);
   formData.append('releaseDate', releaseDate);
   formData.append('voteAverage', voteAverage);
