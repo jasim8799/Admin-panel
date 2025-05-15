@@ -14,16 +14,15 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   const title = document.getElementById('title').value;
   const overview = document.getElementById('overview').value;
   const category = document.getElementById('category').value;
-  const posterFile = document.getElementById('poster').files[0];
   const posterUrl = document.getElementById('posterUrl').value.trim();
   const videoUrl = document.getElementById('videoUrl').value;
   const releaseDate = document.getElementById('releaseDate').value;
   const voteAverage = parseFloat(document.getElementById('voteAverage').value);
   const type = document.getElementById('type').value;
 
-  // Validate that either poster file or poster URL is provided
-  if (!posterFile && !posterUrl) {
-    alert('Please provide either a poster image file or a poster image URL.');
+  // Validate poster URL is provided
+  if (!posterUrl) {
+    alert('Please provide a poster image URL.');
     uploadProgress.style.display = 'none';
     return;
   }
@@ -33,11 +32,7 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   formData.append('title', title);
   formData.append('overview', overview);
   formData.append('category', category);
-  if (posterFile) {
-    formData.append('poster', posterFile);
-  } else {
-    formData.append('posterUrl', posterUrl);
-  }
+  formData.append('posterUrl', posterUrl);
   formData.append('videoUrl', videoUrl);
   formData.append('releaseDate', releaseDate);
   formData.append('voteAverage', voteAverage);
