@@ -52,24 +52,26 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     body: JSON.stringify(movieData)
   })
     .then(response => response.json())
-    .then(data => {
-      uploadProgress.style.display = 'none';
-      if (data.movie) {
-        movieDetails.innerHTML = `
-          <h3>Movie uploaded successfully!</h3>
-          <p><strong>Title:</strong> ${data.movie.title}</p>
-          <p><strong>Overview:</strong> ${data.movie.overview}</p>
-          <p><strong>Category:</strong> ${data.movie.category}</p>
-          <p><strong>Poster URL:</strong> <a href="${data.movie.posterPath}" target="_blank">${data.movie.posterPath}</a></p>
-          <p><strong>Video URL:</strong> <a href="${data.movie.videoUrl}" target="_blank">${data.movie.videoUrl}</a></p>
-          <p><strong>Release Date:</strong> ${data.movie.releaseDate}</p>
-          <p><strong>Vote Average:</strong> ${data.movie.voteAverage}</p>
-          <p><strong>Type:</strong> ${data.movie.type}</p>
-        `;
-      } else {
-        alert('Error: ' + (data.error || 'Unknown error'));
-      }
-    })
+  .then(data => {
+    uploadProgress.style.display = 'none';
+    const uploaded = data.movie || data.series;
+
+    if (uploaded) {
+      movieDetails.innerHTML = `
+        <h3>${uploaded.type} uploaded successfully!</h3>
+        <p><strong>Title:</strong> ${uploaded.title}</p>
+        <p><strong>Overview:</strong> ${uploaded.overview}</p>
+        <p><strong>Category:</strong> ${uploaded.category}</p>
+        <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
+        <p><strong>Video URL:</strong> <a href="${uploaded.videoUrl}" target="_blank">${uploaded.videoUrl}</a></p>
+        <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
+        <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
+        <p><strong>Type:</strong> ${uploaded.type}</p>
+      `;
+    } else {
+      alert('Error: ' + (data.error || 'Unknown error'));
+    }
+  })
     .catch(error => {
       uploadProgress.style.display = 'none';
       alert('Network error occurred: ' + error.message);
