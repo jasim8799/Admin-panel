@@ -39,7 +39,12 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     type
   };
 
-  fetch('https://api-15hv.onrender.com/api/movies', {
+  // Determine correct endpoint based on type
+  const endpoint = type === 'Movie'
+    ? 'https://api-15hv.onrender.com/api/movies'
+    : 'https://api-15hv.onrender.com/api/series';
+
+  fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
