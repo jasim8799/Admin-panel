@@ -14,6 +14,7 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   const title = document.getElementById('title').value;
   const overview = document.getElementById('overview').value;
   const category = document.getElementById('category').value;
+  const region = document.getElementById('region').value;
   const posterUrl = document.getElementById('posterUrl').value.trim();
   const videoUrl = document.getElementById('videoUrl').value;
   const releaseDate = document.getElementById('releaseDate').value;
@@ -32,6 +33,7 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     title,
     overview,
     category,
+    region,
     posterPath: posterUrl,
     videoUrl,
     releaseDate,
@@ -64,6 +66,7 @@ document.getElementById('movie-form').addEventListener('submit', function (event
         <p><strong>Title:</strong> ${uploaded.title}</p>
         <p><strong>Overview:</strong> ${uploaded.overview}</p>
         <p><strong>Category:</strong> ${uploaded.category}</p>
+        <p><strong>Region:</strong> ${uploaded.region}</p>
         <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
         <p><strong>Video URL:</strong> <a href="${uploaded.videoUrl}" target="_blank">${uploaded.videoUrl}</a></p>
         <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
