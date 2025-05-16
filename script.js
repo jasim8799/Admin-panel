@@ -28,57 +28,45 @@ document.getElementById('movie-form').addEventListener('submit', function (event
   }
 
   // Prepare FormData
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('overview', overview);
-  formData.append('category', category);
-  formData.append('posterPath', posterUrl);
-  formData.append('videoUrl', videoUrl);
-  formData.append('releaseDate', releaseDate);
-  formData.append('voteAverage', voteAverage);
-  formData.append('type', type);
-
-  // Use XMLHttpRequest to track upload progress
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://api-15hv.onrender.com/api/movies', true);
-  // Do not set Content-Type header; browser will set it automatically for FormData
-
-  xhr.upload.onprogress = function (event) {
-    if (event.lengthComputable) {
-      const percentComplete = (event.loaded / event.total) * 100;
-      uploadProgressBar.style.width = percentComplete + '%';
-    }
+  const movieData = {
+    title,
+    overview,
+    category,
+    posterPath: posterUrl,
+    videoUrl,
+    releaseDate,
+    voteAverage,
+    type
   };
 
-  xhr.onload = function () {
-    uploadProgress.style.display = 'none';
-    if (xhr.status >= 200 && xhr.status < 300) {
-      const response = JSON.parse(xhr.responseText);
-      movieDetails.innerHTML = `
-        <h3>Movie uploaded successfully!</h3>
-        <p><strong>Title:</strong> ${response.title}</p>
-        <p><strong>Overview:</strong> ${response.overview}</p>
-        <p><strong>Category:</strong> ${response.category}</p>
-        <p><strong>Poster URL:</strong> <a href="${response.posterPath}" target="_blank">${response.posterPath}</a></p>
-        <p><strong>Video URL:</strong> <a href="${response.videoUrl}" target="_blank">${response.videoUrl}</a></p>
-        <p><strong>Release Date:</strong> ${response.releaseDate}</p>
-        <p><strong>Vote Average:</strong> ${response.voteAverage}</p>
-        <p><strong>Type:</strong> ${response.type}</p>
-      `;
-    } else {
-      let errorMsg = 'Unknown error';
-      try {
-        const errorResponse = JSON.parse(xhr.responseText);
-        errorMsg = errorResponse.error || errorMsg;
-      } catch {}
-      alert('Error: ' + errorMsg);
-    }
-  };
-
-  xhr.onerror = function () {
-    uploadProgress.style.display = 'none';
-    alert('Network error occurred during upload.');
-  };
-
-  xhr.send(formData);
+  fetch('https://api-15hv.onrender.com/api/movies', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(movieData)
+  })
+    .then(response => response.json())
+    .then(data => {
+      uploadProgress.style.display = 'none';
+      if (data.movie) {
+        movieDetails.innerHTML = `
+          <h3>Movie uploaded successfully!</h3>
+          <p><strong>Title:</strong> ${data.movie.title}</p>
+          <p><strong>Overview:</strong> ${data.movie.overview}</p>
+          <p><strong>Category:</strong> ${data.movie.category}</p>
+          <p><strong>Poster URL:</strong> <a href="${data.movie.posterPath}" target="_blank">${data.movie.posterPath}</a></p>
+          <p><strong>Video URL:</strong> <a href="${data.movie.videoUrl}" target="_blank">${data.movie.videoUrl}</a></p>
+          <p><strong>Release Date:</strong> ${data.movie.releaseDate}</p>
+          <p><strong>Vote Average:</strong> ${data.movie.voteAverage}</p>
+          <p><strong>Type:</strong> ${data.movie.type}</p>
+        `;
+      } else {
+        alert('Error: ' + (data.error || 'Unknown error'));
+      }
+    })
+    .catch(error => {
+      uploadProgress.style.display = 'none';
+      alert('Network error occurred: ' + error.message);
+    });
 });
