@@ -54,11 +54,13 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     .then(response => response.json())
   .then(data => {
     uploadProgress.style.display = 'none';
-    const uploaded = data.movie || data.series;
+
+    // check both movie and series fields, and fallback to generic 'data' or 'movie'
+    const uploaded = data.movie || data.series || data.data;
 
     if (uploaded) {
       movieDetails.innerHTML = `
-        <h3>${uploaded.type} uploaded successfully!</h3>
+        <h3>${type} uploaded successfully!</h3>
         <p><strong>Title:</strong> ${uploaded.title}</p>
         <p><strong>Overview:</strong> ${uploaded.overview}</p>
         <p><strong>Category:</strong> ${uploaded.category}</p>
