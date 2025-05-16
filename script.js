@@ -1,4 +1,4 @@
-document.getElementById('movie-form').addEventListener('submit', function (event) {
+document.getElementById('movie-form').addEventListener('submit', async function (event) {
   event.preventDefault(); // Prevent form from reloading the page
 
   const uploadProgress = document.getElementById('uploadProgress');
@@ -28,7 +28,7 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     return;
   }
 
-  // Prepare FormData
+  // Prepare movie data object
   const movieData = {
     title,
     overview,
@@ -46,21 +46,22 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     ? 'https://api-15hv.onrender.com/api/movies'
     : 'https://api-15hv.onrender.com/api/series';
 
-  fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(movieData)
-  })
-    .then(response => response.json())
-  .then(data => {
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(movieData)
+    });
+
+    const data = await response.json();
     uploadProgress.style.display = 'none';
 
     // check both movie and series fields, and fallback to generic 'data' or 'movie'
     const uploaded = data.movie || data.series || data.data;
 
-    if (uploaded) {
+    if (response.ok && uploaded) {
       movieDetails.innerHTML = `
         <h3>${type} uploaded successfully!</h3>
         <p><strong>Title:</strong> ${uploaded.title}</p>
@@ -76,9 +77,8 @@ document.getElementById('movie-form').addEventListener('submit', function (event
     } else {
       alert('Error: ' + (data.error || 'Unknown error'));
     }
-  })
-    .catch(error => {
-      uploadProgress.style.display = 'none';
-      alert('Network error occurred: ' + error.message);
-    });
+  } catch (error) {
+    uploadProgress.style.display = 'none';
+    alert('Network error occurred: ' + error.message);
+  }
 });
