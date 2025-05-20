@@ -18,6 +18,10 @@ async function fetchOmdbData() {
 
     if (data.Response === "True") {
       document.getElementById('omdbPoster').src = data.Poster;
+      document.getElementById('posterUrl').value = data.Poster || '';
+      document.getElementById('title').value = data.Title || '';
+      document.getElementById('year').value = data.Year || '';
+      document.getElementById('voteAverage').value = data.imdbRating || '';
       document.getElementById('omdbTitle').innerText = data.Title;
       document.getElementById('omdbYear').innerText = data.Year;
       document.getElementById('omdbRating').innerText = data.imdbRating;
