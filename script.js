@@ -37,7 +37,7 @@ async function fetchOmdbData() {
       document.getElementById('omdbRating').innerText = data.imdbRating;
       document.getElementById('omdbPreview').style.display = 'block';
     } else {
-      alert("No movie found on OMDb.");
+      // Instead of alert, show message in the preview area
       document.getElementById('omdbTitle').innerText = 'Data not available';
       document.getElementById('omdbYear').innerText = 'Data not available';
       document.getElementById('omdbRating').innerText = 'Data not available';
