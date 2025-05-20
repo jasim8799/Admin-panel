@@ -38,7 +38,11 @@ async function fetchOmdbData() {
       document.getElementById('omdbPreview').style.display = 'block';
     } else {
       alert("No movie found on OMDb.");
-      document.getElementById('omdbPreview').style.display = 'none';
+      document.getElementById('omdbTitle').innerText = 'Data not available';
+      document.getElementById('omdbYear').innerText = 'Data not available';
+      document.getElementById('omdbRating').innerText = 'Data not available';
+      document.getElementById('omdbPoster').src = '';
+      document.getElementById('omdbPreview').style.display = 'block';
     }
   } catch (err) {
     console.error("Error fetching OMDb data:", err);
