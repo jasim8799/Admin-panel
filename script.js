@@ -35,6 +35,8 @@ async function fetchOmdbData() {
       if (data.Country) {
         if (data.Country.toLowerCase().includes('india')) {
           document.getElementById('region').value = 'Bollywood';
+        } else if (data.Country.toLowerCase().includes('usa') || data.Country.toLowerCase().includes('united states')) {
+          document.getElementById('region').value = 'Hollywood';
         } else {
           document.getElementById('region').value = 'Hollywood';
         }
