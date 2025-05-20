@@ -3,14 +3,21 @@ const BACKEND_API_URL = 'https://your-api.onrender.com/api/movies'; // replace w
 
 async function fetchOmdbData() {
   const title = document.getElementById('title').value;
-  const year = document.getElementById('year').value;
+  const releaseDate = document.getElementById('releaseDate').value;
+  let year = '';
 
   if (!title) {
     alert("Please enter a movie title.");
     return;
   }
 
-  const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&y=${year}&apikey=${OMDB_API_KEY}`;
+  if (releaseDate) {
+    year = new Date(releaseDate).getFullYear();
+  }
+
+  const url = year
+    ? `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&y=${year}&apikey=${OMDB_API_KEY}`
+    : `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${OMDB_API_KEY}`;
 
   try {
     const response = await fetch(url);
@@ -20,7 +27,6 @@ async function fetchOmdbData() {
       document.getElementById('omdbPoster').src = data.Poster;
       document.getElementById('posterUrl').value = data.Poster || '';
       document.getElementById('title').value = data.Title || '';
-      document.getElementById('year').value = data.Year || '';
       document.getElementById('voteAverage').value = data.imdbRating || '';
       // Set category, type, and region if available in OMDb data or set defaults
       document.getElementById('category').value = data.Genre ? data.Genre.split(',')[0].trim() : '';
@@ -46,7 +52,6 @@ document.getElementById('movieForm').addEventListener('submit', async (e) => {
 
   const movieData = {
     title: document.getElementById('title').value,
-    year: document.getElementById('year').value,
     overview: document.getElementById('overview').value,
     category: document.getElementById('category').value,
     type: document.getElementById('type').value,
