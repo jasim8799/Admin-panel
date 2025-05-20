@@ -43,9 +43,9 @@ async function fetchOmdbData() {
       } else {
         document.getElementById('region').value = 'Hollywood';
       }
-      // Convert OMDb Year to release date format YYYY-01-01
+      // Set release date field to just the year (YYYY) instead of full date
       if (data.Year && /^\d{4}$/.test(data.Year)) {
-        document.getElementById('releaseDate').value = `${data.Year}-01-01`;
+        document.getElementById('releaseDate').value = data.Year;
       }
       document.getElementById('omdbTitle').innerText = data.Title;
       document.getElementById('omdbYear').innerText = data.Year;
