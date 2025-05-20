@@ -1,57 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Panel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Upload Movie</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    #uploadProgress {
+      width: 100%;
+      background-color: #f3f3f3;
+      border-radius: 4px;
+      margin: 10px 0;
+      height: 20px;
+      display: none;
+    }
+    #uploadProgressBar {
+      height: 100%;
+      width: 0%;
+      background-color: #007bff;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    #movieDetails {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
 <body>
-  <h2>Upload Movie</h2>
-  <form id="movieForm">
-    <label>Title:</label>
-    <input type="text" id="title" name="title" required><br><br>
+  <h1>Upload Movie</h1>
+  <form id="movie-form" enctype="multipart/form-data">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required /><br>
 
+    <label for="overview">Overview:</label>
+    <input type="text" id="overview" name="overview" required /><br>
 
-    <label>Overview:</label>
-    <textarea id="overview" name="overview"></textarea><br><br>
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+      <option value="" disabled selected>Select category</option>
+      <option value="Action">Action</option>
+      <option value="Comedy">Comedy</option>
+      <option value="Drama">Drama</option>
+      <option value="Horror">Horror</option>
+      <option value="Sci-Fi">Sci-Fi</option>
+    </select><br>
 
-    <label>Category:</label>
-    <input type="text" id="category" name="category"><br><br>
-
-    <label>Type:</label>
-    <select id="type" name="type">
-      <option value="movie">Movie</option>
-      <option value="series">Series</option>
-    </select><br><br>
-
-    <label>Region:</label>
-    <select id="region" name="region">
+    <label for="region">Region:</label>
+    <select id="region" name="region" required>
       <option value="Hollywood">Hollywood</option>
       <option value="Bollywood">Bollywood</option>
+      <option value="All">All</option>
+    </select><br>
+
+    <label for="posterUrl">Poster Image (URL):</label>
+    <input type="text" id="posterUrl" name="posterUrl" placeholder="Enter image URL" required /><br>
+
+    <label for="videoUrl">Video URL:</label>
+    <input type="text" id="videoUrl" name="videoUrl" required /><br>
+
+    <label for="releaseDate">Release Date:</label>
+    <input type="date" id="releaseDate" name="releaseDate" required /><br>
+
+    <label for="voteAverage">Vote Average:</label>
+    <input type="number" step="0.1" id="voteAverage" name="voteAverage" required /><br>
+
+    <label for="type">Type (Movie/Series):</label>
+    <select id="type" name="type" required>
+      <option value="Movie">Movie</option>
+      <option value="Series">Series</option>
     </select><br><br>
 
-    <label>Release Date:</label>
-    <input type="date" id="releaseDate" name="releaseDate"><br><br>
-
-    <label>Video URL:</label>
-    <input type="text" id="videoUrl" name="videoUrl"><br><br>
-
-    <label>Vote Average (Optional):</label>
-    <input type="number" step="0.1" id="voteAverage" name="voteAverage"><br><br>
-
-    <label>Poster URL (from OMDb):</label>
-    <input type="text" id="posterUrl" name="posterUrl" readonly><br><br>
-
-    <button type="button" onclick="fetchOmdbData()">Check OMDb Data</button>
     <button type="submit">Upload</button>
   </form>
 
-  <div id="omdbPreview" style="margin-top: 20px; display: none;">
-    <h3>OMDb Preview:</h3>
-    <img id="omdbPoster" src="" alt="Poster" style="width: 150px;"><br>
-    <strong>Title:</strong> <span id="omdbTitle"></span><br>
-    <strong>Year:</strong> <span id="omdbYear"></span><br>
-    <strong>IMDB Rating:</strong> <span id="omdbRating"></span><br>
+  <div id="uploadProgress">
+    <div id="uploadProgressBar"></div>
   </div>
+
+  <div id="movieDetails"></div>
 
   <script src="script.js"></script>
 </body>
