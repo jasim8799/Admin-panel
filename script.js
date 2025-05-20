@@ -22,6 +22,10 @@ async function fetchOmdbData() {
       document.getElementById('title').value = data.Title || '';
       document.getElementById('year').value = data.Year || '';
       document.getElementById('voteAverage').value = data.imdbRating || '';
+      // Set category, type, and region if available in OMDb data or set defaults
+      document.getElementById('category').value = data.Genre ? data.Genre.split(',')[0].trim() : '';
+      document.getElementById('type').value = data.Type || 'movie';
+      document.getElementById('region').value = 'Hollywood'; // Default region as OMDb does not provide region info
       document.getElementById('omdbTitle').innerText = data.Title;
       document.getElementById('omdbYear').innerText = data.Year;
       document.getElementById('omdbRating').innerText = data.imdbRating;
