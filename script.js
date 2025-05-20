@@ -1,84 +1,69 @@
-document.getElementById('movie-form').addEventListener('submit', async function (event) {
-  event.preventDefault(); // Prevent form from reloading the page
+const OMDB_API_KEY = '6ab15f18';
+const BACKEND_API_URL = 'https://your-api.onrender.com/api/movies'; // replace with your actual API endpoint
 
-  const uploadProgress = document.getElementById('uploadProgress');
-  const uploadProgressBar = document.getElementById('uploadProgressBar');
-  const movieDetails = document.getElementById('movieDetails');
-
-  // Clear previous details and reset progress bar
-  movieDetails.innerHTML = '';
-  uploadProgressBar.style.width = '0%';
-  uploadProgress.style.display = 'block';
-
-  // Get form values
+async function fetchOmdbData() {
   const title = document.getElementById('title').value;
-  const overview = document.getElementById('overview').value;
-  const category = document.getElementById('category').value;
-  const region = document.getElementById('region').value;
-  const posterUrl = document.getElementById('posterUrl').value.trim();
-  const videoUrl = document.getElementById('videoUrl').value;
-  const releaseDate = document.getElementById('releaseDate').value;
-  const voteAverage = parseFloat(document.getElementById('voteAverage').value);
-  const type = document.getElementById('type').value;
+  const year = document.getElementById('year').value;
 
-  // Validate poster URL is provided
-  if (!posterUrl) {
-    alert('Please provide a poster image URL.');
-    uploadProgress.style.display = 'none';
+  if (!title) {
+    alert("Please enter a movie title.");
     return;
   }
 
-  // Prepare movie data object
-  const movieData = {
-    title,
-    overview,
-    category,
-    region,
-    posterPath: posterUrl,
-    videoUrl,
-    releaseDate,
-    voteAverage,
-    type
-  };
-
-  // Determine correct endpoint based on type
-  const endpoint = type === 'Movie'
-    ? 'https://api-15hv.onrender.com/api/movies'
-    : 'https://api-15hv.onrender.com/api/series';
+  const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&y=${year}&apikey=${OMDB_API_KEY}`;
 
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.Response === "True") {
+      document.getElementById('omdbPoster').src = data.Poster;
+      document.getElementById('omdbTitle').innerText = data.Title;
+      document.getElementById('omdbYear').innerText = data.Year;
+      document.getElementById('omdbRating').innerText = data.imdbRating;
+      document.getElementById('omdbPreview').style.display = 'block';
+    } else {
+      alert("No movie found on OMDb.");
+      document.getElementById('omdbPreview').style.display = 'none';
+    }
+  } catch (err) {
+    console.error("Error fetching OMDb data:", err);
+    alert("Failed to fetch from OMDb.");
+    document.getElementById('omdbPreview').style.display = 'none';
+  }
+}
+
+document.getElementById('movieForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const movieData = {
+    title: document.getElementById('title').value,
+    year: document.getElementById('year').value,
+    overview: document.getElementById('overview').value,
+    category: document.getElementById('category').value,
+    type: document.getElementById('type').value,
+    region: document.getElementById('region').value,
+    release_date: document.getElementById('releaseDate').value,
+    videoUrl: document.getElementById('videoUrl').value,
+    vote_average: parseFloat(document.getElementById('voteAverage').value) || undefined,
+  };
+
+  try {
+    const response = await fetch(BACKEND_API_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(movieData)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(movieData),
     });
 
-    const data = await response.json();
-    uploadProgress.style.display = 'none';
-
-    // check both movie and series fields, and fallback to generic 'data' or 'movie'
-    const uploaded = data.movie || data.series || data.data;
-
-    if (response.ok && uploaded) {
-      movieDetails.innerHTML = `
-        <h3>${type} uploaded successfully!</h3>
-        <p><strong>Title:</strong> ${uploaded.title}</p>
-        <p><strong>Overview:</strong> ${uploaded.overview}</p>
-        <p><strong>Category:</strong> ${uploaded.category}</p>
-        <p><strong>Region:</strong> ${uploaded.region}</p>
-        <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
-        <p><strong>Video URL:</strong> <a href="${uploaded.videoUrl}" target="_blank">${uploaded.videoUrl}</a></p>
-        <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
-        <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
-        <p><strong>Type:</strong> ${uploaded.type}</p>
-      `;
+    if (response.ok) {
+      alert('Movie uploaded successfully!');
+      document.getElementById('movieForm').reset();
+      document.getElementById('omdbPreview').style.display = 'none';
     } else {
-      alert('Error: ' + (data.error || 'Unknown error'));
+      alert('Upload failed.');
     }
-  } catch (error) {
-    uploadProgress.style.display = 'none';
-    alert('Network error occurred: ' + error.message);
+  } catch (err) {
+    console.error('Error uploading movie:', err);
+    alert('Error uploading movie.');
   }
 });
