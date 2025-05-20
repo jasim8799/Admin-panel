@@ -31,7 +31,20 @@ async function fetchOmdbData() {
       // Set category, type, and region if available in OMDb data or set defaults
       document.getElementById('category').value = data.Genre ? data.Genre.split(',')[0].trim() : '';
       document.getElementById('type').value = data.Type || 'movie';
-      document.getElementById('region').value = 'Hollywood'; // Default region as OMDb does not provide region info
+      // Attempt to set region based on country or production info if available, else default to Hollywood
+      if (data.Country) {
+        if (data.Country.toLowerCase().includes('india')) {
+          document.getElementById('region').value = 'Bollywood';
+        } else {
+          document.getElementById('region').value = 'Hollywood';
+        }
+      } else {
+        document.getElementById('region').value = 'Hollywood';
+      }
+      // Convert OMDb Year to release date format YYYY-01-01
+      if (data.Year && /^\d{4}$/.test(data.Year)) {
+        document.getElementById('releaseDate').value = `${data.Year}-01-01`;
+      }
       document.getElementById('omdbTitle').innerText = data.Title;
       document.getElementById('omdbYear').innerText = data.Year;
       document.getElementById('omdbRating').innerText = data.imdbRating;
