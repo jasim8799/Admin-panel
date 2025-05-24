@@ -16,22 +16,18 @@ h1 {
 }
 
 .form-container {
-  display: flex;
-  gap: 40px;
-  max-width: 1200px;
+  display: block;
+  max-width: 700px;
   margin: 20px auto;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 section {
-  flex: 1 1 400px;
   background-color: rgba(3, 169, 244, 0.15);
   padding: 25px 30px;
   border-radius: 10px;
   box-shadow: 0 6px 12px rgba(0, 105, 148, 0.5);
   border: 1px solid #4db6ac;
-  min-width: 350px;
+  margin-bottom: 30px;
 }
 
 h2 {
