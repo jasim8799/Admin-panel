@@ -121,3 +121,31 @@ document.getElementById('episode-form').addEventListener('submit', async functio
     episodeStatus.innerHTML = `<span style="color:red;">Network Error: ${error.message}</span>`;
   }
 });
+
+// Function to fetch series list and populate the seriesId dropdown
+async function fetchSeriesList() {
+  try {
+    const response = await fetch('https://api-15hv.onrender.com/api/series');
+    const data = await response.json();
+
+    if (response.ok && Array.isArray(data)) {
+      const seriesSelect = document.getElementById('seriesId');
+      // Clear existing options except the placeholder
+      seriesSelect.innerHTML = '<option value="" disabled selected>Select a series</option>';
+
+      data.forEach(series => {
+        const option = document.createElement('option');
+        option.value = series._id || series.id || series.seriesId || '';
+        option.textContent = series.title || series.name || 'Untitled Series';
+        seriesSelect.appendChild(option);
+      });
+    } else {
+      console.error('Failed to fetch series list:', data.error || 'Unknown error');
+    }
+  } catch (error) {
+    console.error('Network error while fetching series list:', error.message);
+  }
+}
+
+// Call fetchSeriesList on page load
+window.addEventListener('DOMContentLoaded', fetchSeriesList);
