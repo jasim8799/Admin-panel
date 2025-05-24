@@ -128,12 +128,15 @@ async function fetchSeriesList() {
     const response = await fetch('https://api-15hv.onrender.com/api/series');
     const data = await response.json();
 
+    console.log('Fetched series data:', data);
+
     if (response.ok && Array.isArray(data)) {
       const seriesSelect = document.getElementById('seriesId');
       // Clear existing options except the placeholder
       seriesSelect.innerHTML = '<option value="" disabled selected>Select a series</option>';
 
       data.forEach(series => {
+        console.log('Adding series option:', series);
         const option = document.createElement('option');
         option.value = series._id || series.id || series.seriesId || '';
         option.textContent = series.title || series.name || 'Untitled Series';
