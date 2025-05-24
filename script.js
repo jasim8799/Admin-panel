@@ -125,7 +125,14 @@ document.getElementById('episode-form').addEventListener('submit', async functio
 // Function to fetch series list and populate the seriesId dropdown
 async function fetchSeriesList() {
   try {
-    const response = await fetch('https://api-15hv.onrender.com/api/series');
+    // Use a CORS proxy to bypass CORS issues
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const targetUrl = 'https://api-15hv.onrender.com/api/series';
+    const response = await fetch(proxyUrl + targetUrl, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    });
     const data = await response.json();
 
     console.log('Fetched series data:', data);
