@@ -88,6 +88,7 @@ document.getElementById('episode-form').addEventListener('submit', async functio
 
   const seriesId = document.getElementById('seriesId').value;
   const episodeTitle = document.getElementById('episodeTitle').value;
+  const episodeOverview = document.getElementById('episodeOverview').value;
   const episodeVideoUrl = document.getElementById('episodeVideoUrl').value;
   const episodeNumber = parseInt(document.getElementById('episodeNumber').value);
 
@@ -97,6 +98,7 @@ document.getElementById('episode-form').addEventListener('submit', async functio
   const episodeData = {
     seriesId,
     title: episodeTitle,
+    overview: episodeOverview,
     videoUrl: episodeVideoUrl,
     episodeNumber
   };
