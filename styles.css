@@ -1,122 +1,149 @@
-/* Ocean theme styles */
+/* Enhanced Ocean theme styles with animations and improved typography */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
-  background: linear-gradient(135deg, #2e8bce, #1b3b5a);
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 30px;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
   color: #e0f7fa;
   min-height: 100vh;
   margin: 0;
+  transition: background 0.5s ease;
 }
 
 h1 {
   text-align: center;
   color: #a7d8de;
-  margin-bottom: 30px;
-  text-shadow: 0 0 8px #4db6ac;
+  margin-bottom: 40px;
+  text-shadow: 0 0 12px #4db6ac;
+  font-weight: 700;
+  letter-spacing: 1.5px;
 }
 
 .form-container {
   display: block;
-  max-width: 700px;
-  margin: 20px auto;
+  max-width: 720px;
+  margin: 0 auto 40px;
 }
 
 section {
-  background-color: rgba(3, 169, 244, 0.15);
-  padding: 25px 30px;
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 105, 148, 0.5);
+  background-color: rgba(3, 169, 244, 0.25);
+  padding: 30px 35px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 105, 148, 0.6);
   border: 1px solid #4db6ac;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  transition: box-shadow 0.3s ease;
+}
+
+section:hover {
+  box-shadow: 0 12px 30px rgba(0, 140, 180, 0.8);
 }
 
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   color: #b2ebf2;
-  border-bottom: 2px solid #4dd0e1;
-  padding-bottom: 8px;
-  text-shadow: 0 0 6px #4dd0e1;
+  border-bottom: 3px solid #4dd0e1;
+  padding-bottom: 10px;
+  text-shadow: 0 0 8px #4dd0e1;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 form {
-  background-color: rgba(0, 77, 105, 0.3);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 77, 105, 0.7);
+  background-color: rgba(0, 77, 105, 0.4);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 77, 105, 0.8);
   border: 1px solid #26c6da;
+  transition: box-shadow 0.3s ease;
+}
+
+form:hover {
+  box-shadow: 0 8px 24px rgba(0, 120, 160, 0.9);
 }
 
 label {
   display: block;
-  margin: 8px 0 4px;
-  font-weight: 600;
+  margin: 10px 0 6px;
+  font-weight: 700;
   color: #b2ebf2;
+  letter-spacing: 0.5px;
 }
 
 input, textarea, select {
   width: 100%;
-  padding: 10px 12px;
-  margin: 8px 0 16px;
-  border: 1px solid #4dd0e1;
-  border-radius: 6px;
-  font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  padding: 12px 14px;
+  margin: 10px 0 20px;
+  border: 1.5px solid #4dd0e1;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background-color: rgba(255, 255, 255, 0.12);
   color: #e0f7fa;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  transition: border-color 0.4s ease, background-color 0.4s ease, box-shadow 0.3s ease;
+  box-shadow: inset 0 0 5px rgba(0, 172, 193, 0.3);
 }
 
 input::placeholder, textarea::placeholder {
-  color: #b2ebf2;
+  color: #a0d8e8;
+  font-style: italic;
 }
 
 input:focus, textarea:focus, select:focus {
   border-color: #00acc1;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.25);
   outline: none;
   color: #e0f7fa;
-}
-
-button {
-  background-color: #00acc1;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 8px #00acc1;
 }
 
+button {
+  background: linear-gradient(45deg, #00acc1, #00838f);
+  color: white;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease;
+  box-shadow: 0 0 12px #00acc1;
+}
+
 button:hover {
-  background-color: #00838f;
-  box-shadow: 0 0 12px #00838f;
+  background: linear-gradient(45deg, #00838f, #005f6b);
+  box-shadow: 0 0 20px #005f6b;
+  transform: scale(1.05);
 }
 
 #uploadProgress {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  margin: 15px 0;
-  height: 22px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin: 20px 0;
+  height: 24px;
   display: none;
+  box-shadow: inset 0 0 8px rgba(0, 172, 193, 0.4);
 }
 
 #uploadProgressBar {
   height: 100%;
   width: 0%;
   background-color: #00acc1;
-  border-radius: 6px;
-  transition: width 0.3s;
+  border-radius: 8px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 12px #00acc1;
 }
 
 #movieDetails, #episodeStatus {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 25px;
+  padding: 20px;
   border: 1px solid #26c6da;
-  border-radius: 6px;
-  background-color: rgba(0, 77, 105, 0.4);
-  font-size: 1rem;
+  border-radius: 10px;
+  background-color: rgba(0, 77, 105, 0.5);
+  font-size: 1.1rem;
   color: #e0f7fa;
-  box-shadow: 0 0 8px #26c6da;
+  box-shadow: 0 0 12px #26c6da;
+  transition: box-shadow 0.3s ease;
 }
