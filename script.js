@@ -82,3 +82,42 @@ document.getElementById('movie-form').addEventListener('submit', async function 
     alert('Network error occurred: ' + error.message);
   }
 });
+
+document.getElementById('episode-form').addEventListener('submit', async function (event) {
+  event.preventDefault();
+
+  const seriesId = document.getElementById('seriesId').value;
+  const episodeTitle = document.getElementById('episodeTitle').value;
+  const episodeVideoUrl = document.getElementById('episodeVideoUrl').value;
+  const episodeNumber = parseInt(document.getElementById('episodeNumber').value);
+
+  const episodeStatus = document.getElementById('episodeStatus');
+  episodeStatus.innerText = 'Uploading...';
+
+  const episodeData = {
+    seriesId,
+    title: episodeTitle,
+    videoUrl: episodeVideoUrl,
+    episodeNumber
+  };
+
+  try {
+    const response = await fetch('https://api-15hv.onrender.com/api/episodes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(episodeData)
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.episode) {
+      episodeStatus.innerHTML = `<span style="color:green;">Episode uploaded successfully! Title: ${data.episode.title}</span>`;
+    } else {
+      episodeStatus.innerHTML = `<span style="color:red;">Error: ${data.error || 'Failed to upload episode.'}</span>`;
+    }
+  } catch (error) {
+    episodeStatus.innerHTML = `<span style="color:red;">Network Error: ${error.message}</span>`;
+  }
+});
