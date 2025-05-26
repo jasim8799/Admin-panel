@@ -199,7 +199,13 @@ document.getElementById('videoSourceForm').addEventListener('submit', async func
   const language = document.getElementById('newLanguage').value.trim();
   const url = document.getElementById('newUrl').value.trim();
 
-  const newSource = { quality, language, url };
+  const data = {
+    videoSource: {
+      quality: quality,
+      language: language,
+      url: url
+    }
+  };
 
   try {
     const res = await fetch(`https://api-15hv.onrender.com/api/movies/${movieId}/add-source`, {
@@ -207,7 +213,7 @@ document.getElementById('videoSourceForm').addEventListener('submit', async func
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ videoSource: newSource })
+      body: JSON.stringify(data)
     });
 
     if (res.ok) {
