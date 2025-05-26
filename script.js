@@ -1,3 +1,32 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('.sidebar nav ul li a');
+  const sections = document.querySelectorAll('.main-content section');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Remove active class from all links
+      navLinks.forEach(l => l.classList.remove('active'));
+      // Add active class to clicked link
+      link.classList.add('active');
+
+      const targetId = link.getAttribute('data-target');
+
+      // Show the target section and hide others
+      sections.forEach(section => {
+        if (section.id === targetId) {
+          section.style.display = 'block';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    });
+  });
+});
+
+// Existing code for forms and other functions below...
+
 document.getElementById('movie-form').addEventListener('submit', async function (event) {
   event.preventDefault(); // Prevent form from reloading the page
 
