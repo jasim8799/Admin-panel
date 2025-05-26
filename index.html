@@ -28,6 +28,12 @@
       border-radius: 4px;
       background-color: #f9f9f9;
     }
+    .video-source {
+      margin-bottom: 8px;
+    }
+    .video-source input {
+      margin-right: 5px;
+    }
   </style>
 </head>
 <body>
@@ -62,8 +68,15 @@
       <label for="posterUrl">Poster Image (URL):</label>
       <input type="text" id="posterUrl" name="posterUrl" placeholder="Enter image URL" required /><br>
 
-      <label for="videoUrl">Video URL:</label>
-      <input type="text" id="videoUrl" name="videoUrl" required /><br>
+      <label>Video Sources:</label>
+      <div id="videoSources">
+        <div class="video-source">
+          <input type="text" placeholder="Quality (e.g., 1080p)" class="quality" required />
+          <input type="text" placeholder="Language (e.g., Hindi)" class="language" required />
+          <input type="text" placeholder="Video URL" class="url" required />
+        </div>
+      </div>
+      <button type="button" onclick="addVideoSource()">Add Another Source</button><br>
 
       <label for="releaseDate">Release Date:</label>
       <input type="date" id="releaseDate" name="releaseDate" required /><br>
@@ -111,6 +124,24 @@
 
     <div id="episodeStatus" style="margin-top: 10px;"></div>
   </section>
+
+  <hr>
+  <h2>Add New Video Source to Existing Movie</h2>
+  <form id="videoSourceForm">
+    <label for="existingTitle">Select Movie Title:</label>
+    <select id="existingTitle" required>
+      <!-- Will be populated by JavaScript -->
+    </select><br><br>
+
+    <label>Video Source:</label>
+    <div class="video-source">
+      <input type="text" placeholder="Quality (e.g., 1080p)" id="newQuality" required />
+      <input type="text" placeholder="Language (e.g., Hindi)" id="newLanguage" required />
+      <input type="text" placeholder="Video URL" id="newUrl" required />
+    </div><br>
+
+    <button type="submit">Add Video Source</button>
+  </form>
 
   <script src="script.js"></script>
 </body>

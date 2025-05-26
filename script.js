@@ -16,7 +16,11 @@ document.getElementById('movie-form').addEventListener('submit', async function 
   const category = document.getElementById('category').value;
   const region = document.getElementById('region').value;
   const posterUrl = document.getElementById('posterUrl').value.trim();
-  const videoUrl = document.getElementById('videoUrl').value;
+  const videoSources = Array.from(document.querySelectorAll('#videoSources .video-source')).map(source => ({
+    quality: source.querySelector('.quality').value.trim(),
+    language: source.querySelector('.language').value.trim(),
+    url: source.querySelector('.url').value.trim()
+  }));
   const releaseDate = document.getElementById('releaseDate').value;
   const voteAverage = parseFloat(document.getElementById('voteAverage').value);
   const type = document.getElementById('type').value;
@@ -35,7 +39,7 @@ document.getElementById('movie-form').addEventListener('submit', async function 
     category,
     region,
     posterPath: posterUrl,
-    videoUrl,
+    videoSources,
     releaseDate,
     voteAverage,
     type
@@ -69,7 +73,10 @@ document.getElementById('movie-form').addEventListener('submit', async function 
         <p><strong>Category:</strong> ${uploaded.category}</p>
         <p><strong>Region:</strong> ${uploaded.region}</p>
         <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
-        <p><strong>Video URL:</strong> <a href="${uploaded.videoUrl}" target="_blank">${uploaded.videoUrl}</a></p>
+        <p><strong>Video Sources:</strong></p>
+        <ul>
+          ${uploaded.videoSources.map(source => `<li>${source.quality} - ${source.language} - <a href="${source.url}" target="_blank">${source.url}</a></li>`).join('')}
+        </ul>
         <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
         <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
         <p><strong>Type:</strong> ${uploaded.type}</p>
@@ -82,6 +89,18 @@ document.getElementById('movie-form').addEventListener('submit', async function 
     alert('Network error occurred: ' + error.message);
   }
 });
+
+function addVideoSource() {
+  const container = document.getElementById('videoSources');
+  const div = document.createElement('div');
+  div.className = 'video-source';
+  div.innerHTML = `
+    <input type="text" placeholder="Quality (e.g., 720p)" class="quality" required />
+    <input type="text" placeholder="Language (e.g., English)" class="language" required />
+    <input type="text" placeholder="Video URL" class="url" required />
+  `;
+  container.appendChild(div);
+}
 
 document.getElementById('episode-form').addEventListener('submit', async function (event) {
   event.preventDefault();
@@ -124,3 +143,52 @@ document.getElementById('episode-form').addEventListener('submit', async functio
   }
 });
 
+// Fetch existing movie titles on load
+async function fetchMovieTitles() {
+  try {
+    const res = await fetch('https://api-15hv.onrender.com/api/movies');
+    const data = await res.json();
+    const select = document.getElementById('existingTitle');
+    data.forEach(movie => {
+      const option = document.createElement('option');
+      option.value = movie._id;
+      option.textContent = movie.title;
+      select.appendChild(option);
+    });
+  } catch (err) {
+    console.error('Error fetching movie titles:', err);
+  }
+}
+fetchMovieTitles();
+
+// Handle new video source form submission
+document.getElementById('videoSourceForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const movieId = document.getElementById('existingTitle').value;
+  const quality = document.getElementById('newQuality').value.trim();
+  const language = document.getElementById('newLanguage').value.trim();
+  const url = document.getElementById('newUrl').value.trim();
+
+  const newSource = { quality, language, url };
+
+  try {
+    const res = await fetch(`https://api-15hv.onrender.com/api/movies/${movieId}/add-source`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ videoSource: newSource })
+    });
+
+    if (res.ok) {
+      alert('Video source added successfully!');
+    } else {
+      const error = await res.json();
+      alert('Error adding source: ' + (error.message || res.statusText));
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    alert('Request failed');
+  }
+});
