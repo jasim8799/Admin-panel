@@ -45,7 +45,7 @@ document.getElementById('movie-form').addEventListener('submit', async function 
   const category = document.getElementById('category').value;
   const region = document.getElementById('region').value;
   const posterUrl = document.getElementById('posterUrl').value.trim();
-  const videoSources = Array.from(document.querySelectorAll('#videoSources .video-source')).map(source => ({
+  const videoLinks = Array.from(document.querySelectorAll('#videoSources .video-source')).map(source => ({
     quality: source.querySelector('.quality').value.trim(),
     language: source.querySelector('.language').value.trim(),
     url: source.querySelector('.url').value.trim()
@@ -68,11 +68,12 @@ document.getElementById('movie-form').addEventListener('submit', async function 
     category,
     region,
     posterPath: posterUrl,
-    videoSources,
+    videoLinks,
     releaseDate,
     voteAverage,
     type
   };
+
 
   // Determine correct endpoint based on type
   const endpoint = type === 'Movie'
@@ -104,7 +105,7 @@ document.getElementById('movie-form').addEventListener('submit', async function 
         <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
         <p><strong>Video Sources:</strong></p>
         <ul>
-          ${uploaded.videoSources.map(source => `<li>${source.quality} - ${source.language} - <a href="${source.url}" target="_blank">${source.url}</a></li>`).join('')}
+          ${uploaded.videoLinks.map(source => `<li>${source.quality} - ${source.language} - <a href="${source.url}" target="_blank">${source.url}</a></li>`).join('')}
         </ul>
         <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
         <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
