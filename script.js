@@ -26,39 +26,101 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Upload Movie/Series
-document.getElementById('movieForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const form = e.target;
+document.getElementById('movie-form').addEventListener('submit', async function (event) {
+  event.preventDefault();
 
-  const videoLinkDivs = document.querySelectorAll('.videoLink');
-  const videoLinks = Array.from(videoLinkDivs).map(div => ({
-    language: div.querySelector('.language').value,
-    quality: div.querySelector('.quality').value,
-    url: div.querySelector('.url').value
+  const uploadProgress = document.getElementById('uploadProgress');
+  const uploadProgressBar = document.getElementById('uploadProgressBar');
+  const movieDetails = document.getElementById('movieDetails');
+
+  // Clear previous details and reset progress bar
+  movieDetails.innerHTML = '';
+  uploadProgressBar.style.width = '0%';
+  uploadProgress.style.display = 'block';
+
+  // Get form values
+  const title = document.getElementById('title').value;
+  const overview = document.getElementById('overview').value;
+  const category = document.getElementById('category').value;
+  const region = document.getElementById('region').value;
+  const posterUrl = document.getElementById('posterUrl').value.trim();
+  const videoLinks = Array.from(document.querySelectorAll('#videoSources .video-source')).map(source => ({
+    quality: source.querySelector('.quality').value.trim(),
+    language: source.querySelector('.language').value.trim(),
+    url: source.querySelector('.url').value.trim()
   }));
+  const releaseDate = document.getElementById('releaseDate').value;
+  const voteAverage = parseFloat(document.getElementById('voteAverage').value);
+  const type = document.getElementById('type').value;
 
+  // Validate poster URL is provided
+  if (!posterUrl) {
+    alert('Please provide a poster image URL.');
+    uploadProgress.style.display = 'none';
+    return;
+  }
+
+  // Prepare movie data object
   const movieData = {
-    title: form.title.value,
-    overview: form.overview.value,
-    category: form.category.value,
-    poster: form.poster.value,
-    releaseDate: form.releaseDate.value,
-    voteAverage: parseFloat(form.voteAverage.value),
-    region: form.region.value,
-    type: form.type.value,
-    videoLinks: videoLinks
+    title,
+    overview,
+    category,
+    region,
+    posterPath: posterUrl,
+    videoLinks,
+    releaseDate,
+    voteAverage,
+    type
   };
 
-  const res = await fetch(`${API_URL}/movies`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(movieData)
-  });
+  // Determine correct endpoint based on type
+  const endpoint = type === 'Movie'
+    ? 'https://api-15hv.onrender.com/api/movies'
+    : 'https://api-15hv.onrender.com/api/series';
 
-  alert(res.ok ? 'Movie/Series Uploaded!' : 'Upload Failed');
-  form.reset();
-  document.getElementById('videoLinks').innerHTML = '';
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // Include other headers like Authorization if required
+      },
+      body: JSON.stringify(movieData)
+    });
+
+    const data = await response.json();
+    uploadProgress.style.display = 'none';
+
+    // Check for errors in the response
+    if (!response.ok) {
+      throw new Error(data.error || 'Unknown error occurred');
+    }
+
+    const uploaded = data.movie || data.series || data.data;
+
+    if (uploaded) {
+      movieDetails.innerHTML = `
+        <h3>${type} uploaded successfully!</h3>
+        <p><strong>Title:</strong> ${uploaded.title}</p>
+        <p><strong>Overview:</strong> ${uploaded.overview}</p>
+        <p><strong>Category:</strong> ${uploaded.category}</p>
+        <p><strong>Region:</strong> ${uploaded.region}</p>
+        <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
+        <p><strong>Video Sources:</strong></p>
+        <ul>
+          ${uploaded.videoLinks.map(source => `<li>${source.quality} - ${source.language} - <a href="${source.url}" target="_blank">${source.url}</a></li>`).join('')}
+        </ul>
+        <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
+        <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
+        <p><strong>Type:</strong> ${uploaded.type}</p>
+      `;
+    } else {
+      alert('Error: Invalid response from server.');
+    }
+  } catch (error) {
+    uploadProgress.style.display = 'none';
+    alert('An error occurred: ' + error.message);
+  }
 });
 
 // Upload Episode
