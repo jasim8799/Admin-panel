@@ -239,6 +239,26 @@ if (uploaded) {
   }
   window.addVideoSource = addVideoSource;
 
+  // Add Episode Video Source button function
+  function addEpisodeVideoSource() {
+    const container = document.getElementById('episodeVideoSources');
+    const sourceDiv = document.createElement('div');
+    sourceDiv.classList.add('episode-video-source');
+    sourceDiv.innerHTML = `
+      <input type="text" placeholder="Video URL" class="url" required />
+      <input type="text" placeholder="Language" class="language" required />
+      <input type="text" placeholder="Quality" class="quality" required />
+      <button type="button" onclick="removeEpisodeVideoSource(this)">Remove</button>
+      <br/>
+    `;
+    container.appendChild(sourceDiv);
+  }
+  window.addEpisodeVideoSource = addEpisodeVideoSource;
+
+  function removeEpisodeVideoSource(button) {
+    button.parentElement.remove();
+  }
+
 function addVideoSource() {
   const container = document.createElement('div');
   container.classList.add('video-source');

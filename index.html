@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -92,14 +93,17 @@
         <label for="episodeOverview">Overview:</label>
         <input type="text" id="episodeOverview" name="episodeOverview" required /><br>
 
-        <label for="episodeVideoUrl">Video URL:</label>
-        <input type="text" id="episodeVideoUrl" name="episodeVideoUrl" required /><br>
-
-        <label for="episodeLanguage">Language:</label>
-        <input type="text" id="episodeLanguage" name="episodeLanguage" required /><br>
-
-        <label for="episodeQuality">Quality:</label>
-        <input type="text" id="episodeQuality" name="episodeQuality" required /><br>
+        <label>Video Sources:</label>
+        <div id="episodeVideoSources">
+          <div class="episode-video-source">
+            <input type="text" placeholder="Video URL" class="url" required />
+            <input type="text" placeholder="Language" class="language" required />
+            <input type="text" placeholder="Quality" class="quality" required />
+            <button type="button" onclick="removeEpisodeVideoSource(this)">Remove</button>
+            <br/>
+          </div>
+        </div>
+        <button type="button" onclick="addEpisodeVideoSource()">Add Another Source</button><br>
 
         <label for="episodeNumber">Episode Number:</label>
         <input type="number" id="episodeNumber" name="episodeNumber" required /><br><br>
