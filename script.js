@@ -193,17 +193,16 @@ if (uploaded) {
   });
 
 function addVideoSource() {
-  const container = document.getElementById('videoSources');
-  const div = document.createElement('div');
-  div.classList.add('video-source');
-  div.innerHTML = `
+  const container = document.createElement('div');
+  container.classList.add('video-source');
+  container.innerHTML = `
     <input type="text" placeholder="Quality (e.g., 1080p)" class="quality" required />
     <input type="text" placeholder="Language (e.g., Hindi)" class="language" required />
     <input type="text" placeholder="Video URL" class="url" required />
     <button type="button" onclick="this.parentElement.remove()">Remove</button>
     <br/>
   `;
-  container.appendChild(div);
+  document.getElementById('videoSources').appendChild(container);
 }
 window.addVideoSource = addVideoSource;
 });
