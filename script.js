@@ -206,4 +206,5 @@ if (uploaded) {
     `;
     container.appendChild(div);
   }
+  window.addVideoSource = addVideoSource;
 });
