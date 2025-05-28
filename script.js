@@ -99,25 +99,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const uploaded = data.movie || data.series || data.data;
 
-      if (uploaded) {
-        movieDetails.innerHTML = `
-          <h3>${type} uploaded successfully!</h3>
-          <p><strong>Title:</strong> ${uploaded.title}</p>
-          <p><strong>Overview:</strong> ${uploaded.overview}</p>
-          <p><strong>Category:</strong> ${uploaded.category}</p>
-          <p><strong>Region:</strong> ${uploaded.region}</p>
-          <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
-          <p><strong>Video Sources:</strong></p>
-          <ul>
-            ${uploaded.videoLinks.map(source => `<li>${source.quality} - ${source.language} - <a href="${source.url}" target="_blank">${source.url}</a></li>`).join('')}
-          </ul>
-          <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
-          <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
-          <p><strong>Type:</strong> ${uploaded.type}</p>
-        `;
-      } else {
-        alert('Error: Invalid response from server.');
-      }
+if (uploaded) {
+  movieDetails.innerHTML = `
+    <h3>${type} uploaded successfully!</h3>
+    <p><strong>Title:</strong> ${uploaded.title}</p>
+    <p><strong>Overview:</strong> ${uploaded.overview}</p>
+    <p><strong>Category:</strong> ${uploaded.category}</p>
+    <p><strong>Region:</strong> ${uploaded.region}</p>
+    <p><strong>Poster URL:</strong> <a href="${uploaded.posterPath}" target="_blank">${uploaded.posterPath}</a></p>
+    <p><strong>Video Sources:</strong></p>
+    <ul>
+      ${(Array.isArray(uploaded.videoLinks) ? uploaded.videoLinks : []).map(source => `<li>${source.quality} - ${source.language} - <a href="${source.url}" target="_blank">${source.url}</a></li>`).join('')}
+    </ul>
+    <p><strong>Release Date:</strong> ${uploaded.releaseDate}</p>
+    <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
+    <p><strong>Type:</strong> ${uploaded.type}</p>
+  `;
+} else {
+  alert('Error: Invalid response from server.');
+}
     } catch (error) {
       uploadProgress.style.display = 'none';
       alert('An error occurred: ' + error.message);
