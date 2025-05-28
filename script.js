@@ -192,19 +192,18 @@ if (uploaded) {
     }
   });
 
-  // Dynamically add video source fields
-  function addVideoSource() {
-    const container = document.getElementById('videoLinks');
-    const div = document.createElement('div');
-    div.classList.add('videoLink');
-    div.innerHTML = `
-      <input type="text" placeholder="Language" class="language" required />
-      <input type="text" placeholder="Quality (e.g. 1080p)" class="quality" required />
-      <input type="text" placeholder="Video URL" class="url" required />
-      <button type="button" onclick="this.parentElement.remove()">Remove</button>
-      <br/>
-    `;
-    container.appendChild(div);
-  }
-  window.addVideoSource = addVideoSource;
+function addVideoSource() {
+  const container = document.getElementById('videoSources');
+  const div = document.createElement('div');
+  div.classList.add('video-source');
+  div.innerHTML = `
+    <input type="text" placeholder="Quality (e.g., 1080p)" class="quality" required />
+    <input type="text" placeholder="Language (e.g., Hindi)" class="language" required />
+    <input type="text" placeholder="Video URL" class="url" required />
+    <button type="button" onclick="this.parentElement.remove()">Remove</button>
+    <br/>
+  `;
+  container.appendChild(div);
+}
+window.addVideoSource = addVideoSource;
 });
