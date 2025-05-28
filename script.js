@@ -1,4 +1,30 @@
-const API_URL = 'https://api-15hv.onrender.com/api';
+// Navigation for sidebar links
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('.sidebar nav ul li a');
+  const sections = document.querySelectorAll('.main-content section');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Remove active class from all links
+      navLinks.forEach(l => l.classList.remove('active'));
+      // Add active class to clicked link
+      link.classList.add('active');
+
+      const targetId = link.getAttribute('data-target');
+
+      // Show the target section and hide others
+      sections.forEach(section => {
+        if (section.id === targetId) {
+          section.style.display = 'block';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    });
+  });
+});
 
 // Upload Movie/Series
 document.getElementById('movieForm').addEventListener('submit', async (e) => {
