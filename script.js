@@ -137,14 +137,24 @@ document.getElementById('episodeForm').addEventListener('submit', async (e) => {
     url: form.url.value
   };
 
-  const res = await fetch(`${API_URL}/episodes`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(episodeData)
-  });
+  try {
+    const res = await fetch(`${API_URL}/episodes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(episodeData)
+    });
 
-  alert(res.ok ? 'Episode Uploaded!' : 'Upload Failed');
-  form.reset();
+    const data = await res.json();
+
+    if (res.ok) {
+      alert('Episode Uploaded! Title: ' + (data.episode ? data.episode.title : 'Unknown'));
+      form.reset();
+    } else {
+      alert('Upload Failed: ' + (data.error || JSON.stringify(data)));
+    }
+  } catch (error) {
+    alert('Network error: ' + error.message);
+  }
 });
 
 // Add Video Source to Existing Movie/Series
@@ -158,14 +168,24 @@ document.getElementById('sourceForm').addEventListener('submit', async (e) => {
     url: form.url.value
   };
 
-  const res = await fetch(`${API_URL}/movies/${form.id.value}/sources`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(sourceData)
-  });
+  try {
+    const res = await fetch(`${API_URL}/movies/${form.id.value}/sources`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sourceData)
+    });
 
-  alert(res.ok ? 'Source Added!' : 'Add Failed');
-  form.reset();
+    const data = await res.json();
+
+    if (res.ok) {
+      alert('Source Added Successfully!');
+      form.reset();
+    } else {
+      alert('Add Failed: ' + (data.error || JSON.stringify(data)));
+    }
+  } catch (error) {
+    alert('Network error: ' + error.message);
+  }
 });
 
 // Dynamically add video source fields
