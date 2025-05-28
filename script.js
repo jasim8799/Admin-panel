@@ -180,17 +180,32 @@ if (uploaded) {
   // Add Video Source to Existing Movie/Series
   async function populateMovieTitles() {
     try {
+      console.log('Fetching movies...');
       const res = await fetch(`${API_URL}/movies`);
-      const movies = await res.json();
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+      const data = await res.json();
+      const movies = data.movies; // Extract 'movies' array from the response
+
+      console.log('Movies received:', movies);
+
+      if (!Array.isArray(movies)) throw new Error('Movies is not an array');
+
       const select = document.getElementById('existingTitle');
+      if (!select) throw new Error('Dropdown element not found');
+
+      select.innerHTML = '<option value="">-- Select Movie --</option>';
+
       movies.forEach(movie => {
         const option = document.createElement('option');
-        option.value = movie._id || movie.id;
+        option.value = movie._id;
         option.textContent = movie.title;
         select.appendChild(option);
       });
-    } catch (err) {
-      console.error('Failed to load movie titles:', err);
+
+    } catch (error) {
+      console.error('Error fetching movie titles:', error);
+      alert('Could not load movie titles. Check console for error.');
     }
   }
 
