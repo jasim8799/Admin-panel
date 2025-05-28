@@ -127,19 +127,35 @@ if (uploaded) {
   });
 
   // Upload Episode
+
+  function collectEpisodeVideoSources() {
+    const sources = [];
+    const containers = document.querySelectorAll('.episode-video-source');
+    containers.forEach(container => {
+      const quality = container.querySelector('.quality').value;
+      const language = container.querySelector('.language').value;
+      const url = container.querySelector('.url').value;
+      if (quality && language && url) {
+        sources.push({ quality, language, url });
+      }
+    });
+    return sources;
+  }
+
   document.getElementById('episode-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
 
     const episodeData = {
-      seriesId: form.seriesId.value,
       title: form.episodeTitle.value,
       overview: form.episodeOverview.value,
+      seriesId: form.seriesId.value,
       episodeNumber: parseInt(form.episodeNumber.value),
-      language: form.episodeLanguage.value,
-      quality: form.episodeQuality.value,
-      url: form.episodeVideoUrl.value
+      releaseDate: form.episodeReleaseDate ? form.episodeReleaseDate.value : undefined,
+      videoSources: collectEpisodeVideoSources()
     };
+
+    console.log("Sending episode data:", episodeData);
 
     try {
       const res = await fetch(`${API_URL}/episodes`, {
