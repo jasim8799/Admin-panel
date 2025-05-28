@@ -227,7 +227,7 @@ if (uploaded) {
       const result = await res.json();
 
       if (res.ok) {
-        alert(`Video source added to "${result.title || 'Unknown'}" successfully.`);
+        alert(`Video source added to "${result.movie?.title || 'Unknown'}" successfully.`);
         document.getElementById('videoSourceForm').reset();
       } else {
         throw new Error(result.error || 'Failed to add video source.');
