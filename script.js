@@ -181,11 +181,10 @@ if (uploaded) {
   async function populateMovieTitles() {
     try {
       console.log('Fetching movies...');
-      const res = await fetch(`${API_URL}/movies`);
+      const res = await fetch(`${API_URL}/movies/all`);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-      const data = await res.json();
-      const movies = data.movies; // Extract 'movies' array from the response
+      const movies = await res.json();
 
       console.log('Movies received:', movies);
 
