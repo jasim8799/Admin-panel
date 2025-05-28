@@ -148,49 +148,80 @@ if (uploaded) {
         body: JSON.stringify(episodeData)
       });
 
-      const data = await res.json();
+      const result = await res.json();
 
       if (res.ok) {
-        alert('Episode Uploaded! Title: ' + (data.episode ? data.episode.title : 'Unknown'));
+        document.getElementById('episodeStatus').innerText = `Episode "${result.title || (result.episode && result.episode.title) || 'Unknown'}" uploaded successfully.`;
         form.reset();
       } else {
-        alert('Upload Failed: ' + (data.error || JSON.stringify(data)));
+        throw new Error(result.error || 'Failed to upload episode.');
       }
-    } catch (error) {
-      alert('Network error: ' + error.message);
+    } catch (err) {
+      document.getElementById('episodeStatus').innerText = 'Error: ' + err.message;
     }
   });
 
   // Add Video Source to Existing Movie/Series
+  async function populateMovieTitles() {
+    try {
+      const res = await fetch(`${API_URL}/movies`);
+      const movies = await res.json();
+      const select = document.getElementById('existingTitle');
+      movies.forEach(movie => {
+        const option = document.createElement('option');
+        option.value = movie._id || movie.id;
+        option.textContent = movie.title;
+        select.appendChild(option);
+      });
+    } catch (err) {
+      console.error('Failed to load movie titles:', err);
+    }
+  }
+
+  populateMovieTitles();
+
   document.getElementById('videoSourceForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const form = e.target;
-
-    const sourceData = {
-      language: form.language.value,
-      quality: form.quality.value,
-      url: form.url.value
-    };
+    const movieId = document.getElementById('existingTitle').value;
+    const quality = document.getElementById('newQuality').value;
+    const language = document.getElementById('newLanguage').value;
+    const url = document.getElementById('newUrl').value;
 
     try {
-      const res = await fetch(`${API_URL}/movies/${form.id.value}/sources`, {
+      const res = await fetch(`${API_URL}/movies/${movieId}/videosource`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sourceData)
+        body: JSON.stringify({ quality, language, url })
       });
 
-      const data = await res.json();
+      const result = await res.json();
 
       if (res.ok) {
-        alert('Source Added Successfully!');
-        form.reset();
+        alert(`Video source added to "${result.title || 'Unknown'}" successfully.`);
+        document.getElementById('videoSourceForm').reset();
       } else {
-        alert('Add Failed: ' + (data.error || JSON.stringify(data)));
+        throw new Error(result.error || 'Failed to add video source.');
       }
-    } catch (error) {
-      alert('Network error: ' + error.message);
+    } catch (err) {
+      alert('Error: ' + err.message);
     }
   });
+
+  // Add Video Source button function
+  function addVideoSource() {
+    const container = document.getElementById('videoSources');
+    const sourceDiv = document.createElement('div');
+    sourceDiv.classList.add('video-source');
+    sourceDiv.innerHTML = `
+      <input type="text" placeholder="Quality (e.g., 1080p)" class="quality" required />
+      <input type="text" placeholder="Language (e.g., Hindi)" class="language" required />
+      <input type="text" placeholder="Video URL" class="url" required />
+      <button type="button" onclick="this.parentElement.remove()">Remove</button>
+      <br/>
+    `;
+    container.appendChild(sourceDiv);
+  }
+  window.addVideoSource = addVideoSource;
 
 function addVideoSource() {
   const container = document.createElement('div');
