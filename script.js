@@ -218,10 +218,10 @@ if (uploaded) {
     const url = document.getElementById('newUrl').value;
 
     try {
-      const res = await fetch(`${API_URL}/movies/${movieId}/videosource`, {
-        method: 'POST',
+      const res = await fetch(`${API_URL}/movies/${movieId}/add-source`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quality, language, url })
+        body: JSON.stringify({ videoSource: { quality, language, url } })
       });
 
       const result = await res.json();
