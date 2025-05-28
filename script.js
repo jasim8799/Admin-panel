@@ -1,3 +1,5 @@
+const API_URL = 'https://api-15hv.onrender.com/api';
+
 // Wrap all event listeners inside DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   // Navigation for sidebar links
@@ -131,11 +133,12 @@ if (uploaded) {
 
     const episodeData = {
       seriesId: form.seriesId.value,
-      title: form.title.value,
+      title: form.episodeTitle.value,
+      overview: form.episodeOverview.value,
       episodeNumber: parseInt(form.episodeNumber.value),
-      language: form.language.value,
-      quality: form.quality.value,
-      url: form.url.value
+      language: form.episodeLanguage.value,
+      quality: form.episodeQuality.value,
+      url: form.episodeVideoUrl.value
     };
 
     try {
