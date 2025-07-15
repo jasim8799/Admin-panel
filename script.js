@@ -217,16 +217,15 @@ function removeEpisodeVideoSource(button) {
 }
 
 function fetchAnalytics() {
-  fetch(`${API_URL}/app-stats`)
+  fetch(`${API_URL}/analytics/summary`)
     .then(res => res.json())
     .then(data => {
       document.getElementById('totalInstalls').textContent = data.totalInstalls || 0;
-      document.getElementById('totalVisits').textContent = data.totalVisits || 0;
-      document.getElementById('todayVisits').textContent = data.todayVisits || 0;
-      document.getElementById('totalMoviePlays').textContent = data.totalMoviePlays || 0;
+      document.getElementById('totalVisits').textContent = data.totalViews || 0;
+      document.getElementById('todayVisits').textContent = data.todayViews || 0;
     })
     .catch(err => {
-      console.error('Failed to load analytics:', err);
+      console.error('Failed to load analytics summary:', err);
     });
 }
 
