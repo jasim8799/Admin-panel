@@ -15,12 +15,16 @@
         <li><a href="#" data-target="uploadMovieSection" class="active">Upload Movie or Series</a></li>
         <li><a href="#" data-target="uploadEpisodeSection">Upload Episode</a></li>
         <li><a href="#" data-target="addVideoSourceSection">Add Video Source</a></li>
+        <li><a href="#" data-target="analyticsSection">Analytics</a></li>
       </ul>
     </nav>
   </div>
 
   <div class="main-content">
     <section id="uploadMovieSection">
+      <!-- Your entire uploadMovieSection content as in your original code -->
+      <!-- [YOUR ORIGINAL HTML for uploadMovieSection remains unchanged here] -->
+
       <h2>Upload Movie or Series</h2>
       <form id="movie-form" enctype="multipart/form-data">
         <label for="title">Title:</label>
@@ -116,7 +120,6 @@
 
     <section id="addVideoSourceSection" style="display:none;">
       <h2>Add Video Source</h2>
-
       <form id="videoSourceForm">
         <label for="existingTitle">Select Movie:</label>
         <select id="existingTitle" name="existingTitle" required>
@@ -134,6 +137,21 @@
 
         <button type="submit">Add Video Source</button>
       </form>
+    </section>
+
+    <!-- ✅ New Analytics section -->
+    <section id="analyticsSection" style="display:none;">
+      <h2>Analytics</h2>
+      <table id="analyticsTable">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Event</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </section>
   </div>
 

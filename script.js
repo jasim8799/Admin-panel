@@ -287,3 +287,37 @@ function addVideoSource() {
 }
 window.addVideoSource = addVideoSource;
 });
+// Analytics loading function
+async function loadAnalytics() {
+  try {
+    const res = await fetch(`${API_URL}/analytics`);
+    const events = await res.json();
+
+    const tableBody = document.querySelector('#analyticsTable tbody');
+    tableBody.innerHTML = '';
+
+    if (events.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="3">No analytics events yet.</td></tr>`;
+      return;
+    }
+
+    events.forEach(event => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${new Date(event.timestamp).toLocaleString()}</td>
+        <td>${event.event}</td>
+        <td><pre style="white-space: pre-wrap; text-align:left;">${JSON.stringify(event.details, null, 2)}</pre></td>
+      `;
+      tableBody.appendChild(tr);
+    });
+
+  } catch (err) {
+    alert('Failed to load analytics: ' + err.message);
+    console.error(err);
+  }
+}
+
+// Load analytics when Analytics tab is clicked
+document.querySelector('a[data-target="analyticsSection"]').addEventListener('click', () => {
+  loadAnalytics();
+});
