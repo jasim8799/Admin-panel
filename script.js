@@ -321,3 +321,47 @@ async function loadAnalytics() {
 document.querySelector('a[data-target="analyticsSection"]').addEventListener('click', () => {
   loadAnalytics();
 });
+// new updated   
+
+document.addEventListener("DOMContentLoaded", () => {
+  // When analytics section is shown
+  document.querySelector("a[data-target='analyticsSection']").addEventListener("click", () => {
+    fetchAnalytics();
+    fetchCrashReports();
+  });
+});
+
+function fetchAnalytics() {
+  fetch("/api/app-stats")
+    .then((res) => res.json())
+    .then((data) => {
+      document.getElementById("totalInstalls").textContent = data.totalInstalls || 0;
+      document.getElementById("totalVisits").textContent = data.totalVisits || 0;
+      document.getElementById("todayVisits").textContent = data.todayVisits || 0;
+      document.getElementById("totalMoviePlays").textContent = data.totalMoviePlays || 0;
+    })
+    .catch((err) => {
+      console.error("Failed to load analytics:", err);
+    });
+}
+
+function fetchCrashReports() {
+  fetch("/api/crashes")
+    .then((res) => res.json())
+    .then((reports) => {
+      const tableBody = document.querySelector("#crashReportsTable tbody");
+      tableBody.innerHTML = "";
+      reports.forEach((report) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${new Date(report.createdAt).toLocaleString()}</td>
+          <td>${report.message || ""}</td>
+          <td>${report.platform || ""}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    })
+    .catch((err) => {
+      console.error("Failed to load crash reports:", err);
+    });
+}
