@@ -1,14 +1,12 @@
 const API_URL = 'https://api-15hv.onrender.com/api';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Navigation handling
   const navLinks = document.querySelectorAll('.sidebar nav ul li a');
   const sections = document.querySelectorAll('.main-content section');
 
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
-
       navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
 
@@ -89,6 +87,19 @@ function handleMovieUpload(event) {
           <p><strong>Vote Average:</strong> ${uploaded.voteAverage}</p>
           <p><strong>Type:</strong> ${uploaded.type}</p>
         `;
+
+        // Track play event for analytics
+        fetch(`${API_URL}/analytics/track`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event: 'play',
+            details: {
+              title: uploaded.title,
+              type: uploaded.type
+            }
+          })
+        }).catch(err => console.warn('Analytics tracking failed:', err));
       } else {
         alert('Error: Invalid response from server.');
       }
@@ -101,7 +112,6 @@ function handleMovieUpload(event) {
 
 function handleEpisodeUpload(e) {
   e.preventDefault();
-
   const form = e.target;
 
   const episodeData = {
@@ -223,6 +233,7 @@ function fetchAnalytics() {
       document.getElementById('totalInstalls').textContent = data.totalInstalls || 0;
       document.getElementById('totalVisits').textContent = data.totalViews || 0;
       document.getElementById('todayVisits').textContent = data.todayViews || 0;
+      document.getElementById('totalMoviePlays').textContent = data.totalPlays || 0;
     })
     .catch(err => {
       console.error('Failed to load analytics summary:', err);
@@ -249,3 +260,4 @@ function fetchCrashReports() {
       console.error('Failed to load crash reports:', err);
     });
 }
+
