@@ -1,4 +1,8 @@
-const API_URL = 'https://api-15hv.onrender.com/api';
+const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy/api';
+const AUTH_HEADERS = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer dfghjk45678vbnm5678ixcvbnjmkr5t6y7u8icvbnjm56y7uvbhnjmkr5678vbhnj'
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.sidebar nav ul li a');
@@ -62,7 +66,7 @@ function handleMovieUpload(event) {
 
   fetch(endpoint, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: AUTH_HEADERS,
     body: JSON.stringify(movieData)
   })
     .then(response => response.json())
@@ -88,10 +92,9 @@ function handleMovieUpload(event) {
           <p><strong>Type:</strong> ${uploaded.type}</p>
         `;
 
-        // Track play event for analytics
         fetch(`${API_URL}/analytics/track`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: AUTH_HEADERS,
           body: JSON.stringify({
             event: 'play',
             details: {
@@ -124,7 +127,7 @@ function handleEpisodeUpload(e) {
 
   fetch(`${API_URL}/episodes`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: AUTH_HEADERS,
     body: JSON.stringify(episodeData)
   })
     .then(res => res.json())
@@ -151,7 +154,7 @@ function handleVideoSourceUpload(e) {
 
   fetch(`${API_URL}/movies/${movieId}/add-source`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: AUTH_HEADERS,
     body: JSON.stringify({ videoSource: { quality, language, url } })
   })
     .then(res => res.json())
@@ -169,7 +172,9 @@ function handleVideoSourceUpload(e) {
 }
 
 function populateMovieTitles() {
-  fetch(`${API_URL}/movies/all`)
+  fetch(`${API_URL}/movies/all`, {
+    headers: AUTH_HEADERS
+  })
     .then(res => res.json())
     .then(movies => {
       const select = document.getElementById('existingTitle');
@@ -227,7 +232,9 @@ function removeEpisodeVideoSource(button) {
 }
 
 function fetchAnalytics() {
-  fetch(`${API_URL}/analytics/summary`)
+  fetch(`${API_URL}/analytics/summary`, {
+    headers: AUTH_HEADERS
+  })
     .then(res => res.json())
     .then(data => {
       document.getElementById('totalInstalls').textContent = data.totalInstalls || 0;
@@ -241,7 +248,9 @@ function fetchAnalytics() {
 }
 
 function fetchCrashReports() {
-  fetch(`${API_URL}/crashes`)
+  fetch(`${API_URL}/crashes`, {
+    headers: AUTH_HEADERS
+  })
     .then(res => res.json())
     .then(reports => {
       const tableBody = document.querySelector('#crashReportsTable tbody');
@@ -260,4 +269,3 @@ function fetchCrashReports() {
       console.error('Failed to load crash reports:', err);
     });
 }
-
