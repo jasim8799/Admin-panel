@@ -69,7 +69,15 @@ function handleMovieUpload(event) {
     headers: AUTH_HEADERS,
     body: JSON.stringify(movieData)
   })
-    .then(response => response.json())
+    .then(async response => {
+      const text = await response.text();
+      if (!response.ok) throw new Error(`Server error (${response.status}): ${text}`);
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        throw new Error(`Invalid JSON: ${text}`);
+      }
+    })
     .then(data => {
       uploadProgress.style.display = 'none';
       const uploaded = data.movie || data.series || data.data;
@@ -104,7 +112,7 @@ function handleMovieUpload(event) {
           })
         }).catch(err => console.warn('Analytics tracking failed:', err));
       } else {
-        alert('Error: Invalid response from server.');
+        alert('Error: Upload failed. Server returned incomplete data.');
       }
     })
     .catch(err => {
@@ -130,7 +138,11 @@ function handleEpisodeUpload(e) {
     headers: AUTH_HEADERS,
     body: JSON.stringify(episodeData)
   })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      if (!res.ok) throw new Error(`Server error (${res.status}): ${text}`);
+      return JSON.parse(text);
+    })
     .then(result => {
       if (result && result.title) {
         document.getElementById('episodeStatus').textContent = `Episode "${result.title}" uploaded successfully.`;
@@ -157,7 +169,11 @@ function handleVideoSourceUpload(e) {
     headers: AUTH_HEADERS,
     body: JSON.stringify({ videoSource: { quality, language, url } })
   })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      if (!res.ok) throw new Error(`Server error (${res.status}): ${text}`);
+      return JSON.parse(text);
+    })
     .then(result => {
       if (result && result.movie) {
         alert(`Video source added to "${result.movie.title}" successfully.`);
@@ -175,7 +191,11 @@ function populateMovieTitles() {
   fetch(`${API_URL}/movies/all`, {
     headers: AUTH_HEADERS
   })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      if (!res.ok) throw new Error(`Error (${res.status}): ${text}`);
+      return JSON.parse(text);
+    })
     .then(movies => {
       const select = document.getElementById('existingTitle');
       select.innerHTML = '<option value="">-- Select Movie --</option>';
@@ -235,7 +255,11 @@ function fetchAnalytics() {
   fetch(`${API_URL}/analytics/summary`, {
     headers: AUTH_HEADERS
   })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      if (!res.ok) throw new Error(`Error (${res.status}): ${text}`);
+      return JSON.parse(text);
+    })
     .then(data => {
       document.getElementById('totalInstalls').textContent = data.totalInstalls || 0;
       document.getElementById('totalVisits').textContent = data.totalViews || 0;
@@ -251,7 +275,11 @@ function fetchCrashReports() {
   fetch(`${API_URL}/crashes`, {
     headers: AUTH_HEADERS
   })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      if (!res.ok) throw new Error(`Error (${res.status}): ${text}`);
+      return JSON.parse(text);
+    })
     .then(reports => {
       const tableBody = document.querySelector('#crashReportsTable tbody');
       tableBody.innerHTML = '';
