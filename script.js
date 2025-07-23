@@ -1,5 +1,6 @@
 //const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy/api';
-const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy';
+//const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy';
+const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy/api'; // ✅ correct
 const AUTH_HEADERS = {
   'Content-Type': 'application/json',
   'Authorization': 'Bearer dfghjk45678vbnm5678ixcvbnjmkr5t6y7u8icvbnjm56y7uvbhnjmkr5678vbhnj'
