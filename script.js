@@ -1,12 +1,23 @@
 //const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy/api';
 //const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy';
 //const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy/api'; // ✅ correct
-const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy'; // ✅ no /api
+//const API_URL = 'https://proxy-server-6hu9.onrender.com/proxy'; // ✅ no /api
+
+//const AUTH_HEADERS = {
+//  'Content-Type': 'application/json',
+//  'Authorization': 'Bearer dfghjk45678vbnm5678ixcvbnjmkr5t6y7u8icvbnjm56y7uvbhnjmkr5678vbhnj'
+//};
+
+// ✅ Switched to Real API
+const API_URL = 'https://api-15hv.onrender.com/api'; // 🔒 Don't expose this in public repos
 
 const AUTH_HEADERS = {
   'Content-Type': 'application/json',
   'Authorization': 'Bearer dfghjk45678vbnm5678ixcvbnjmkr5t6y7u8icvbnjm56y7uvbhnjmkr5678vbhnj'
 };
+
+// All remaining code is unchanged — safely continues to use AUTH_HEADERS and real API URL
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.sidebar nav ul li a');
